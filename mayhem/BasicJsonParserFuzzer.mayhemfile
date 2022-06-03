@@ -1,0 +1,9 @@
+project: PROJECT
+target: BasicJsonParserFuzzer
+cmds:
+- cmd: /out/jazzer_driver --agent_path=/out/jazzer_agent_deploy.jar --cp=/out/spring-boot.jar:/out/spring-boot-loader.jar:/out/spring-core.jar:/out/spring-boot-starter-web.jar::/out --target_class=BasicJsonParserFuzzer --jvm_args="-Xmx2048m"
+  env:
+    JAVA_HOME: '"/out/open-jdk-17/"'
+    LD_LIBRARY_PATH: '"/out/open-jdk-17/lib/server":/out'
+  timeout: 50
+  libfuzzer: true
