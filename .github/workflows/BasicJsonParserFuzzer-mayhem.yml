@@ -20,7 +20,7 @@ jobs:
         - os: ubuntu-latest
           triplet: x64-linux
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
       with:
         submodules: recursive
     - name: Log in to the Container registry
@@ -43,15 +43,10 @@ jobs:
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
     - name: Start analysis
-      uses: forallsecure/mcode-action@v1
+      uses: ForAllSecure/mcode-action@long-runs
       with:
         mayhem-token: ${{ secrets.MAYHEM_TOKEN }}
         args: --image ${{ steps.meta.outputs.tags }} --file mayhem/BasicJsonParserFuzzer.mayhemfile
           --cmd '/out/jazzer_driver --agent_path=/out/jazzer_agent_deploy.jar --cp=/out/spring-boot.jar:/out/spring-boot-loader.jar:/out/spring-core.jar:/out/spring-boot-starter-web.jar::/out
           --target_class=BasicJsonParserFuzzer --jvm_args="-Xmx2048m"' --env JAVA_HOME="/out/open-jdk-17/"
           --env LD_LIBRARY_PATH="/out/open-jdk-17/lib/server":/out --libfuzzer True
-        sarif-output: sarif
-    - name: Upload SARIF file(s)
-      uses: github/codeql-action/upload-sarif@v2
-      with:
-        sarif_file: sarif
